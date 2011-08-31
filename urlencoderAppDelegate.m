@@ -11,30 +11,32 @@
 @implementation urlencoderAppDelegate
 
 @synthesize window;
-
-@synthesize textTextField;
-
 @synthesize encodedTextField;
-@synthesize decodedTextField;
+@synthesize encodeButton;
+@synthesize decodeButton;
+@synthesize decodedTextView;
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
 	// Insert code here to initialize your application 
 }
 
+- (IBAction)decode:(id)sender {
+    NSString *encodedString = [encodedTextField stringValue];
+	
+    // decode
+    [decodedTextView setString:[encodedString stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+}
+
 - (IBAction)encode:(id)sender {
-	NSString *unencodedString = [textTextField stringValue];
+    NSString *unencodedString = [decodedTextView string];
 	
     // encode
     NSString * encodedString = (NSString *)CFURLCreateStringByAddingPercentEscapes
-		(NULL,
-		 (CFStringRef)unencodedString,
-		 NULL,
-		 (CFStringRef)@"!*'();:@&=+$,/?%#[]",
-		 kCFStringEncodingUTF8);
+    (NULL,
+     (CFStringRef)unencodedString,
+     NULL,
+     (CFStringRef)@"!*'();:@&=+$,/?%#[]",
+     kCFStringEncodingUTF8);
 	[encodedTextField setStringValue:encodedString];
-    
-    // decode
-    [decodedTextField setStringValue:[unencodedString stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
 }
-
 @end

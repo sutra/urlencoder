@@ -10,19 +10,20 @@
 
 @interface urlencoderAppDelegate : NSObject <NSApplicationDelegate> {
     NSWindow *window;
-	IBOutlet NSTextField *textTextField;
-	IBOutlet NSTextField *encodedTextField;
-    NSTextField *decodedTextField;
+    NSTextField *encodedTextField;
+    NSButton *encodeButton;
+    NSButton *decodeButton;
+    NSTextView *decodedTextView;
 }
 
 @property (assign) IBOutlet NSWindow *window;
 
-@property (assign) IBOutlet NSTextField *textTextField;
-
 @property (assign) IBOutlet NSTextField *encodedTextField;
-
-@property (assign) IBOutlet NSTextField *decodedTextField;
+@property (assign) IBOutlet NSButton *encodeButton;
+@property (assign) IBOutlet NSButton *decodeButton;
+@property (assign) IBOutlet NSTextView *decodedTextView;
 
 - (IBAction)encode:(id)sender;
+- (IBAction)decode:(id)sender;
 
 @end
