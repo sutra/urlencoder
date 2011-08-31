@@ -15,6 +15,7 @@
 @synthesize textTextField;
 
 @synthesize encodedTextField;
+@synthesize decodedTextField;
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
 	// Insert code here to initialize your application 
@@ -22,13 +23,18 @@
 
 - (IBAction)encode:(id)sender {
 	NSString *unencodedString = [textTextField stringValue];
-	NSString * encodedString = (NSString *)CFURLCreateStringByAddingPercentEscapes
+	
+    // encode
+    NSString * encodedString = (NSString *)CFURLCreateStringByAddingPercentEscapes
 		(NULL,
 		 (CFStringRef)unencodedString,
 		 NULL,
 		 (CFStringRef)@"!*'();:@&=+$,/?%#[]",
 		 kCFStringEncodingUTF8);
 	[encodedTextField setStringValue:encodedString];
+    
+    // decode
+    [decodedTextField setStringValue:[unencodedString stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
 }
 
 @end

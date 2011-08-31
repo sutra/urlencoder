@@ -12,6 +12,7 @@
     NSWindow *window;
 	IBOutlet NSTextField *textTextField;
 	IBOutlet NSTextField *encodedTextField;
+    NSTextField *decodedTextField;
 }
 
 @property (assign) IBOutlet NSWindow *window;
@@ -19,6 +20,8 @@
 @property (assign) IBOutlet NSTextField *textTextField;
 
 @property (assign) IBOutlet NSTextField *encodedTextField;
+
+@property (assign) IBOutlet NSTextField *decodedTextField;
 
 - (IBAction)encode:(id)sender;
 
