@@ -10,10 +10,10 @@
 
 @interface urlencoderAppDelegate : NSObject <NSApplicationDelegate> {
     NSWindow *window;
+    NSTextView *decodedTextView;
     NSTextField *encodedTextField;
     NSButton *encodeButton;
-    NSButton *decodeButton;
-    NSTextView *decodedTextView;
+    NSButton *decodeButton;    
 }
 
 @property (assign) IBOutlet NSWindow *window;
@@ -25,5 +25,5 @@
 
 - (IBAction)encode:(id)sender;
 - (IBAction)decode:(id)sender;
-
+- (void)textViewDidChangeSelection:(NSNotification *)aNotification;
 @end

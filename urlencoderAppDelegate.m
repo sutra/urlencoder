@@ -39,4 +39,21 @@
      kCFStringEncodingUTF8);
 	[encodedTextField setStringValue:encodedString];
 }
+
+- (void)textViewDidChangeSelection:(NSNotification *)aNotification{
+    NSRange selectedRange = [decodedTextView selectedRange];
+    NSString *unencodedString = [decodedTextView string];
+    
+    if(selectedRange.length == 0) {
+        // no text selected
+        return;
+    } else {
+        NSString *textInRange = [unencodedString substringWithRange:selectedRange];
+        NSString *textBeforeRange = [unencodedString substringToIndex:selectedRange.location];
+        
+        NSLog(@"text before range: %@", textBeforeRange);
+        NSLog(@"text in range: %@", textInRange);
+        
+    }
+}
 @end
