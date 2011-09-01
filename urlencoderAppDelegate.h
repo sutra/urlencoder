@@ -11,19 +11,23 @@
 @interface urlencoderAppDelegate : NSObject <NSApplicationDelegate> {
     NSWindow *window;
     NSTextView *decodedTextView;
-    NSTextField *encodedTextField;
+    NSTextView *encodedTextView;
     NSButton *encodeButton;
-    NSButton *decodeButton;    
+    NSButton *decodeButton;
+    bool textViewLocked;
 }
 
 @property (assign) IBOutlet NSWindow *window;
 
-@property (assign) IBOutlet NSTextField *encodedTextField;
 @property (assign) IBOutlet NSButton *encodeButton;
 @property (assign) IBOutlet NSButton *decodeButton;
 @property (assign) IBOutlet NSTextView *decodedTextView;
+@property (assign) IBOutlet NSTextView *encodedTextView;
 
-- (IBAction)encode:(id)sender;
-- (IBAction)decode:(id)sender;
+- (void)textDidChange:(NSNotification *)aNotification;
 - (void)textViewDidChangeSelection:(NSNotification *)aNotification;
+
+- (NSString *)urlEncode:(NSString *)unencodedString;
+- (NSString *)urlDecode:(NSString *)encodedString;
+- (void)setSelectionBy:(NSTextView *)sourceTextView To:(NSTextView *)targetTextView EncodeMode:(Boolean)isEncode;
 @end

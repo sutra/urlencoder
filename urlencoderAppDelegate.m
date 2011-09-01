@@ -11,49 +11,101 @@
 @implementation urlencoderAppDelegate
 
 @synthesize window;
-@synthesize encodedTextField;
 @synthesize encodeButton;
 @synthesize decodeButton;
 @synthesize decodedTextView;
+@synthesize encodedTextView;
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-	// Insert code here to initialize your application 
+	// Insert code here to initialize your application
+    [encodedTextView setRichText:FALSE];
+    [decodedTextView setRichText:FALSE];
 }
 
-- (IBAction)decode:(id)sender {
-    NSString *encodedString = [encodedTextField stringValue];
-	
-    // decode
-    [decodedTextView setString:[encodedString stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+- (void)textDidChange:(NSNotification *)aNotification {
+    if(textViewLocked == false) {
+        textViewLocked = true;
+        if([decodedTextView isEqual:[aNotification object]]) {
+            // sender is decoded text view do encode
+            [encodedTextView setString:[self urlEncode:([decodedTextView string])]];
+            
+        }
+        
+        if([encodedTextView isEqual:[aNotification object]]) {
+            // sender is encoded text view do decode
+            [decodedTextView setString:[self urlDecode:[encodedTextView string]]];
+            
+        }
+        textViewLocked = false;
+    }
 }
 
-- (IBAction)encode:(id)sender {
-    NSString *unencodedString = [decodedTextView string];
-	
-    // encode
-    NSString * encodedString = (NSString *)CFURLCreateStringByAddingPercentEscapes
+- (void)textViewDidChangeSelection:(NSNotification *)aNotification {
+    if(textViewLocked == false) {
+        textViewLocked = true;
+        if([decodedTextView isEqual:[aNotification object]]) {
+            // sender is decoded text view
+            [self setSelectionBy:decodedTextView To:encodedTextView EncodeMode:true];
+        }
+        
+        if([encodedTextView isEqual:[aNotification object]]) {
+            // sender is encoded text view
+            [self setSelectionBy:encodedTextView To:decodedTextView EncodeMode:false];
+        }
+        textViewLocked = false;
+    }
+}
+
+- (NSString *)urlEncode:(NSString *)unencodedString {
+    NSString *encodedString = (NSString *)CFURLCreateStringByAddingPercentEscapes
     (NULL,
      (CFStringRef)unencodedString,
      NULL,
      (CFStringRef)@"!*'();:@&=+$,/?%#[]",
      kCFStringEncodingUTF8);
-	[encodedTextField setStringValue:encodedString];
+    
+    return encodedString;
 }
 
-- (void)textViewDidChangeSelection:(NSNotification *)aNotification{
-    NSRange selectedRange = [decodedTextView selectedRange];
-    NSString *unencodedString = [decodedTextView string];
+- (NSString *)urlDecode:(NSString *)encodedString {
+    if(encodedString == nil || [encodedString stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding] == nil) {
+        return @"";
+    } else {
+        return [encodedString stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    }
+}
+
+- (void)setSelectionBy:(NSTextView *)sourceTextView To:(NSTextView *)targetTextView EncodeMode:(Boolean)isEncode {
+    NSRange selectedRange = [sourceTextView selectedRange];
+    NSString *wholeText = [sourceTextView string];
     
     if(selectedRange.length == 0) {
         // no text selected
         return;
     } else {
-        NSString *textInRange = [unencodedString substringWithRange:selectedRange];
-        NSString *textBeforeRange = [unencodedString substringToIndex:selectedRange.location];
+        NSString *textInRange = [wholeText substringWithRange:selectedRange];
+        NSString *textBeforeRange = [wholeText substringToIndex:selectedRange.location];
         
-        NSLog(@"text before range: %@", textBeforeRange);
-        NSLog(@"text in range: %@", textInRange);
+        NSString *processedTextInRange;
+        NSString *processedTextBeforeRange;
+        if(isEncode == true) {
+            processedTextInRange = [self urlEncode:textInRange];
+            processedTextBeforeRange = [self urlEncode:textBeforeRange];
+        } else {
+            processedTextInRange = [self urlDecode:textInRange];
+            processedTextBeforeRange = [self urlDecode:textBeforeRange];
+        }
         
+        int highLightLocation = processedTextBeforeRange.length;
+        int highLightLength = processedTextInRange.length;
+        
+        if(highLightLocation == 0 && textBeforeRange.length != 0) {
+            // can not find correct text in target text view, give up
+            [targetTextView setSelectedRange:NSMakeRange(0, 0)];
+            return;
+        }
+        
+        [targetTextView setSelectedRange:NSMakeRange(highLightLocation, highLightLength)];
     }
 }
 @end
