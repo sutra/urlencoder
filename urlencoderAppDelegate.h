@@ -26,6 +26,7 @@
 
 - (void)textDidChange:(NSNotification *)aNotification;
 - (void)textViewDidChangeSelection:(NSNotification *)aNotification;
+- (BOOL)windowShouldClose:(id)sender;
 
 - (NSString *)urlEncode:(NSString *)unencodedString;
 - (NSString *)urlDecode:(NSString *)encodedString;

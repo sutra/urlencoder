@@ -40,6 +40,13 @@
     }
 }
 
+- (BOOL)windowShouldClose:(id)sender {
+    // set close winow method to miniaturize window
+    [window miniaturize:window];
+    
+    return NO;
+}
+
 - (void)textViewDidChangeSelection:(NSNotification *)aNotification {
     if(textViewLocked == false) {
         textViewLocked = true;
