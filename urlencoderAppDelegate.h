@@ -12,18 +12,20 @@
     NSWindow *window;
     NSTextView *decodedTextView;
     NSTextView *encodedTextView;
-    NSButton *encodeButton;
-    NSButton *decodeButton;
+    NSButton *decodedCopyButton;
     bool textViewLocked;
 }
 
 @property (assign) IBOutlet NSWindow *window;
 
-@property (assign) IBOutlet NSButton *encodeButton;
-@property (assign) IBOutlet NSButton *decodeButton;
 @property (assign) IBOutlet NSTextView *decodedTextView;
 @property (assign) IBOutlet NSTextView *encodedTextView;
+@property (assign) IBOutlet NSButton *decodedCopyButton;
 
+- (IBAction)copyDecodedText:(id)sender;
+- (IBAction)copyEncodedText:(id)sender;
+- (IBAction)copySelectedDecodedText:(id)sender;
+- (IBAction)copySelectedEncodedText:(id)sender;
 - (void)textDidChange:(NSNotification *)aNotification;
 - (void)textViewDidChangeSelection:(NSNotification *)aNotification;
 - (BOOL)windowShouldClose:(id)sender;

@@ -11,15 +11,48 @@
 @implementation urlencoderAppDelegate
 
 @synthesize window;
-@synthesize encodeButton;
-@synthesize decodeButton;
 @synthesize decodedTextView;
 @synthesize encodedTextView;
+@synthesize decodedCopyButton;
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
 	// Insert code here to initialize your application
     [encodedTextView setRichText:FALSE];
     [decodedTextView setRichText:FALSE];
+}
+
+- (IBAction)copyDecodedText:(id)sender {
+    NSPasteboard *pasteboard = [NSPasteboard generalPasteboard];
+    [pasteboard clearContents];
+    NSArray *objectsToCopy = [NSArray arrayWithObjects:
+                             [decodedTextView string],nil];
+   [pasteboard writeObjects:objectsToCopy];
+}
+
+- (IBAction)copyEncodedText:(id)sender {
+    NSPasteboard *pasteboard = [NSPasteboard generalPasteboard];
+    [pasteboard clearContents];
+    NSArray *objectsToCopy = [NSArray arrayWithObjects:
+                              [encodedTextView string],nil];
+    [pasteboard writeObjects:objectsToCopy];
+}
+
+- (IBAction)copySelectedDecodedText:(id)sender {
+    NSPasteboard *pasteboard = [NSPasteboard generalPasteboard];
+    [pasteboard clearContents];
+    NSArray *objectsToCopy = [NSArray arrayWithObjects:
+                              [[decodedTextView string] substringWithRange:
+                               [decodedTextView selectedRange]],nil];
+    [pasteboard writeObjects:objectsToCopy];
+}
+
+- (IBAction)copySelectedEncodedText:(id)sender {
+    NSPasteboard *pasteboard = [NSPasteboard generalPasteboard];
+    [pasteboard clearContents];
+    NSArray *objectsToCopy = [NSArray arrayWithObjects:
+                              [[encodedTextView string] substringWithRange:
+                               [encodedTextView selectedRange]],nil];
+    [pasteboard writeObjects:objectsToCopy];
 }
 
 - (void)textDidChange:(NSNotification *)aNotification {
