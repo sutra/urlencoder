@@ -1072,7 +1072,7 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 							<object class="NSTextFieldCell" key="NSCell" id="252601911">
 								<int key="NSCellFlags">68288064</int>
 								<int key="NSCellFlags2">272630784</int>
-								<string key="NSContents">Commom Text:</string>
+								<string key="NSContents">Common Text:</string>
 								<object class="NSFont" key="NSSupport" id="974453954">
 									<string key="NSName">LucidaGrande</string>
 									<double key="NSSize">13</double>
